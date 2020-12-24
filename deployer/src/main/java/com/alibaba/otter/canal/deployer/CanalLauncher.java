@@ -37,6 +37,9 @@ public class CanalLauncher {
             setGlobalUncaughtExceptionHandler();
 
             logger.info("## load canal configurations");
+
+
+            //加载canal.properties配置文件----------------------------------
             String conf = System.getProperty("canal.conf", "classpath:canal.properties");
             Properties properties = new Properties();
             if (conf.startsWith(CLASSPATH_URL_PREFIX)) {
@@ -45,6 +48,7 @@ public class CanalLauncher {
             } else {
                 properties.load(new FileInputStream(conf));
             }
+            //-----------------------------------
 
             final CanalStarter canalStater = new CanalStarter(properties);
             String managerAddress = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_MANAGER);
@@ -113,6 +117,7 @@ public class CanalLauncher {
             }
 
             canalStater.start();
+            //线程不会再往下执行
             runningLatch.await();
             executor.shutdownNow();
         } catch (Throwable e) {
