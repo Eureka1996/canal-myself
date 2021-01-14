@@ -43,6 +43,7 @@ public class CanalServerWithNetty extends AbstractCanalLifeCycle implements Cana
         private static final CanalServerWithNetty CANAL_SERVER_WITH_NETTY = new CanalServerWithNetty();
     }
 
+    //单例模式
     private CanalServerWithNetty(){
         this.embeddedServer = CanalServerWithEmbedded.instance();
         this.childGroups = new DefaultChannelGroup();

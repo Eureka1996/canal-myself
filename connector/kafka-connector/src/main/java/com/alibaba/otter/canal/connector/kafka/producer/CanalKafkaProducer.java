@@ -234,6 +234,7 @@ public class CanalKafkaProducer extends AbstractMQProducer implements CanalMQPro
             // 并发构造
             EntryRowData[] datas = MQMessageUtils.buildMessageData(message, buildExecutor);
             // 串行分区
+            // binlog-rows-query-log-events=true配置下的两条数据都会到flatMessages中
             List<FlatMessage> flatMessages = MQMessageUtils.messageConverter(datas, message.getId());
             for (FlatMessage flatMessage : flatMessages) {
                 if (mqDestination.getPartitionHash() != null && !mqDestination.getPartitionHash().isEmpty()) {

@@ -62,6 +62,7 @@ public class CanalStarter {
      */
     public synchronized void start() throws Throwable {
         String serverMode = CanalController.getProperty(properties, CanalConstants.CANAL_SERVER_MODE);
+        //canal.properties中默认是tcp
         if (!"tcp".equalsIgnoreCase(serverMode)) {
             ExtensionLoader<CanalMQProducer> loader = ExtensionLoader.getExtensionLoader(CanalMQProducer.class);
             canalMQProducer = loader
@@ -73,7 +74,7 @@ public class CanalStarter {
                 Thread.currentThread().setContextClassLoader(cl);
             }
         }
-
+        //tcp模式下canalMQProducer为null
         if (canalMQProducer != null) {
             MQProperties mqProperties = canalMQProducer.getMqProperties();
             // disable netty
@@ -88,6 +89,7 @@ public class CanalStarter {
         controller = new CanalController(properties);
         controller.start();
         logger.info("## the canal server is running now ......");
+        //添加钩子，jvm关闭前执行
         shutdownThread = new Thread(() -> {
             try {
                 logger.info("## stop the canal server");

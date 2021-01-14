@@ -1,0 +1,25 @@
+@startuml
+CanalLauncher -> canal.properties: 通过环境变量canal.conf
+CanalLauncher <- canal.properties: 生成Properties对象
+CanalLauncher -> CanalStater: 使用Properties创建对象
+CanalLauncher <- CanalStater: 生成canalStater
+CanalLauncher -> CanalController: 获取admin.manager地址
+CanalLauncher <- CanalController: 返回admin.manager地址
+
+
+CanalLauncher -> CanalStater: 启动:start()
+CanalStater -> CanalController: 获取server_mode，默认为tcp
+CanalStater -> CanalController: 生成CanalController对象controller，使用properties
+CanalController -> CanalController: 初始化全局参数设置
+CanalController -> CanalController: 初始化instance config
+CanalController -> CanalController: 准备canal server
+CanalController -> CanalController: 初始化monitor机制
+
+CanalStater -> CanalController: controller.start()，启动server
+CanalController -> zkPathUtils: 获取canal工作节点，string path
+CanalController -> CanalController: 优先启动embeded服务
+CanalController -> CanalServerWithNetty: 启动网络接口
+
+
+
+@enduml
